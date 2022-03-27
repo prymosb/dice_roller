@@ -14,17 +14,20 @@ def parse_args():
 
 def parse_roll_expression(roll_expression):
     '''
+    Using regex we validate the given roll expression is valid and extract all the values we need from itt
+    Extracted values are returned as a tuple
     Assuming nobody needs to roll more than 99 dice
     Allowing only existing D&D dice: d4, d6, d8, d10, d20, d100
-    ^ - beginning of the expression
-    ([1-9]|[1-9][0-9]) - one or two digits where the first one is not zero
-    d - letter 'd'
-    (4|6|8|10|20|100) - digit 4 or 6 or 8 etc
-    (?:\+([1-9]|[1-9][0-9]))? - expression responsible for the modifier of the roll
-        (?:<something here>)? - this part makes the section optional. use may or may not specify the modifier
-        \+ - literal plus sign
+    Regex breakdown:
+        ^ - beginning of the expression
         ([1-9]|[1-9][0-9]) - one or two digits where the first one is not zero
-    $ - end of the expression
+        d - letter 'd'
+        (4|6|8|10|20|100) - digit 4 or 6 or 8 etc
+        (?:\+([1-9]|[1-9][0-9]))? - expression responsible for the modifier of the roll
+            (?:<something here>)? - this part makes the section optional. use may or may not specify the modifier
+            \+ - literal plus sign
+            ([1-9]|[1-9][0-9]) - one or two digits where the first one is not zero
+        $ - end of the expression
     '''
     regex = r'^([1-9]|[1-9][0-9])d(4|6|8|10|20|100)(?:(\+|\-)([1-9]|[1-9][0-9]))?$'
     roll_expression_regex = re.compile(regex)
@@ -43,11 +46,9 @@ def main():
     args = parse_args()
     regex_groups = parse_roll_expression(args.dice)
     num_of_dice, die_type, modifier_operator, roll_modifier = regex_groups
-    # check regex matches
-    # split string
-    # figure out the die
     # roll
     # add modifier
+    # check if i need pipenv
     # pretty output
     print(f'ROLL EXPRESSION: {args.dice}')
     print(
