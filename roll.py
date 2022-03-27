@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import argparse
+from random import randint
 import sys
 import re
 
@@ -42,15 +43,27 @@ def parse_roll_expression(roll_expression):
     return regex_groups
 
 
+def roll_dice(num_of_dice, die_type):
+    num_of_dice_int = int(num_of_dice)
+    die_type_int = int(die_type)
+    print(f'🎲 Rolling {num_of_dice_int} d{die_type_int} 🎲')
+    total = 0
+    for i in range(num_of_dice_int):
+        roll = randint(1, die_type_int)
+        print(f'Die number {i+1} rolled {roll}')
+        total += roll
+    print(f'Total roll without modifier: {total}')
+    return total
+
+
 def main():
     args = parse_args()
     regex_groups = parse_roll_expression(args.dice)
     num_of_dice, die_type, modifier_operator, roll_modifier = regex_groups
-    # roll
+    roll_result = roll_dice(num_of_dice, die_type)
     # add modifier
     # check if i need pipenv
     # pretty output
-    print(f'ROLL EXPRESSION: {args.dice}')
     print(
         f'num_of_dice={num_of_dice}, die_type={die_type}, modifier_operator={modifier_operator}, roll_modifier={roll_modifier}')
 
