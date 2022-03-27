@@ -2,7 +2,6 @@
 import argparse
 import sys
 import re
-from tokenize import group
 
 
 def parse_args():
@@ -27,7 +26,7 @@ def parse_roll_expression(roll_expression):
         ([1-9]|[1-9][0-9]) - one or two digits where the first one is not zero
     $ - end of the expression
     '''
-    regex = r'^([1-9]|[1-9][0-9])d(4|6|8|10|20|100)(?:\+([1-9]|[1-9][0-9]))?$'
+    regex = r'^([1-9]|[1-9][0-9])d(4|6|8|10|20|100)(?:(\+|\-)([1-9]|[1-9][0-9]))?$'
     roll_expression_regex = re.compile(regex)
     regex_result = roll_expression_regex.search(roll_expression)
     regex_groups = ''
@@ -42,7 +41,8 @@ def parse_roll_expression(roll_expression):
 
 def main():
     args = parse_args()
-    num_of_dice, die_type, roll_modifier = parse_roll_expression(args.dice)
+    regex_groups = parse_roll_expression(args.dice)
+    num_of_dice, die_type, modifier_operator, roll_modifier = regex_groups
     # check regex matches
     # split string
     # figure out the die
@@ -51,7 +51,7 @@ def main():
     # pretty output
     print(f'ROLL EXPRESSION: {args.dice}')
     print(
-        f'num_of_dice={num_of_dice}, die_type={die_type}, roll_modifier={roll_modifier}')
+        f'num_of_dice={num_of_dice}, die_type={die_type}, modifier_operator={modifier_operator}, roll_modifier={roll_modifier}')
 
 
 if __name__ == "__main__":
