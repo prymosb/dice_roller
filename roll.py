@@ -56,16 +56,33 @@ def roll_dice(num_of_dice, die_type):
     return total
 
 
+def modify_roll(roll_result, modifier_operator, roll_modifier):
+    '''
+    Adding or subtracting a modifier from a roll.
+    Forsing values to int to bwe consistent 
+    Allowing only '+' and '-' operators. Ignoring any other
+    '''
+    if (not modifier_operator) or (not roll_modifier):
+        return roll_result
+    roll_result_int = int(roll_result)
+    roll_modifier_int = int(roll_modifier)
+    result = roll_result_int
+    if modifier_operator == '+':
+        result += roll_modifier_int
+    elif modifier_operator == '-':
+        result -= roll_modifier_int
+    return result
+
+
 def main():
     args = parse_args()
     regex_groups = parse_roll_expression(args.dice)
     num_of_dice, die_type, modifier_operator, roll_modifier = regex_groups
     roll_result = roll_dice(num_of_dice, die_type)
-    # add modifier
+    modified_roll = modify_roll(roll_result, modifier_operator, roll_modifier)
+    print(f'Total roll with modifier: {modified_roll}')
     # check if i need pipenv
     # pretty output
-    print(
-        f'num_of_dice={num_of_dice}, die_type={die_type}, modifier_operator={modifier_operator}, roll_modifier={roll_modifier}')
 
 
 if __name__ == "__main__":
